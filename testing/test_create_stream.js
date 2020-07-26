@@ -1,14 +1,17 @@
-let multichain = require("multichain-node")({
+const multichain = require('multichain-node');
+
+const connection = multichain({
     port: 8002,
     host: '127.0.0.1',
-    user: "multichainrpc",
-    pass: "this-is-insecure-change-it"
+    user: 'multichainrpc',
+    pass: 'password'
 });
 
-multichain.create({
-    type: "stream",
-    name: "stream1",
+connection.create({
+    type: 'stream',
+    name: 'sensors',
     open: true
 }).then(() => {
-    multichain.listStreams();
-})
+    const p = connection.listStreams();
+    Promise.all([p]).then((streams) => console.log(streams), (e) => console.error(e));
+}, (e) => console.error(e))

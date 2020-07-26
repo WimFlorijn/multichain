@@ -1,11 +1,10 @@
 version: '3.7'
 
 services:
-
     masternode:
-        build: ./master
-        stdin_open: true
-        tty: true
+        build:
+            context: master
+            dockerfile: Dockerfile
         expose:
             - 7557
             - 8002
@@ -17,16 +16,16 @@ services:
             NETWORK_PORT: 7557
             RPC_PORT: 8002
             RPC_USER: multichainrpc
-            RPC_PASSWORD: this-is-insecure-change-it
+            RPC_PASSWORD: password
             RPC_ALLOW_IP: 0.0.0.0/0.0.0.0
             PARAM_TARGET_BLOCK_SIZE: target-block-time|30
             PARAM_ANYONE_CAN_CONNECT: anyone-can-connect|true
             PARAM_ANYONE_CAN_MINE: anyone-can-mine|true
 
     slavenode:
-        build: ./node
-        stdin_open: true
-        tty: true
+        build:
+            context: node
+            dockerfile: Dockerfile
         expose:
             - 7557
             - 8002
@@ -38,17 +37,18 @@ services:
             NETWORK_PORT: 7557
             RPC_PORT: 8002
             RPC_USER: multichainrpc
-            RPC_PASSWORD: this-is-insecure-change-it
+            RPC_PASSWORD: password
             RPC_ALLOW_IP: 0.0.0.0/0.0.0.0
             MASTER_NODE: masternode
         links:
             - masternode
         depends_on:
             - masternode
+
     explorernode:
-        build: ./explorer
-        stdin_open: true
-        tty: true
+        build:
+            context: explorer
+            dockerfile: Dockerfile
         expose:
             - 2750
             - 7557
@@ -60,7 +60,7 @@ services:
             NETWORK_PORT: 7557
             RPC_PORT: 8002
             RPC_USER: multichainrpc
-            RPC_PASSWORD: this-is-insecure-change-it
+            RPC_PASSWORD: password
             RPC_ALLOW_IP: 0.0.0.0/0.0.0.0
             MASTER_NODE_HOST: masternode
             MASTER_NODE_PORT: 7557

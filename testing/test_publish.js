@@ -5,7 +5,7 @@ const connection = multichain({
     port: 8002,
     host: '127.0.0.1',
     user: 'multichainrpc',
-    pass: 'this-is-insecure-change-it'
+    pass: 'password'
 });
 
 const sensor = {
@@ -30,7 +30,7 @@ const sensor = {
 }
 
 connection.publish({
-    stream: 'stream1',
+    stream: 'sensors',
     key: uuidv4(),
     data: Buffer.from(JSON.stringify(sensor)).toString('hex')
 })
